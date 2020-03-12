@@ -1,0 +1,101 @@
+extends layout
+
+block content
+  header
+    p#usuariosConectados
+
+
+  hr
+  .side
+  
+  ul#listaMensajes.pantalla.typewriter
+    .separador
+    
+    li.texto.typewriter Iniciando servidor de la CIA ...
+    //- li dummies //
+
+    //- li.texto1   Agente Jacobson:
+    //-   span    Entrégueme ese sobre
+    //- li.texto2   Agente doble Johnson:
+    //-   span    Jamás!
+  .side
+
+
+  hr
+  .downbar
+    label Agente : 
+    input#username(type="text")
+    label Alegación : 
+    input#mensaje(type="text")
+    input#btnEnviar.btn.btn-outline-primary(type="button", value="Enviar")
+  script.
+
+    let socket = io();
+
+    let inputUsername = document.getElementById('username');
+    let inputMensaje = document.getElementById('mensaje');
+    let listaMensajes = document.getElementById('listaMensajes');
+    let usuariosConectados = document.getElementById('usuariosConectados');
+
+
+
+    let boton = document.getElementById('btnEnviar');
+    
+    boton.addEventListener('click', () => {
+      console.log('El protocolo Hasselhoff ha sido ejecutado con éxito');
+      // El evento se emite hacia el servidor en ./bin/www
+      // En este caso, se emite el evento chat_message que envía ese objeto
+      // Ese objeto llega al servidor en ./bin/www
+      socket.emit('chat_message', {
+        username: inputUsername.value,
+        message: inputMensaje.value,
+      })
+    });
+
+    // Me suscribo para recuperar ese mensaje
+    socket.on('chat_message', (data)=> {
+      console.log(data);
+
+      let li = document.createElement('li');
+      li.classList.add("texto");
+      li.classList.add('typewritter');
+      li.innerText = `Agente ${data.username} :   ${data.message}`;
+
+      listaMensajes.append(li);
+
+    // Scroll Automático de mensajes
+      listaMensajes.scrollTop = listaMensajes.scrollHeight;
+    })
+
+    // Recuperar Número de Usuarios
+    socket.on('chat_users', (data) => {
+      console.log('Implementando matriz multidimensional');
+      console.log('Actualmente hay '+data+' agentes en la terminal');
+
+      usuariosConectados.innerText = `Agentes conectados la terminal: ${data}`;
+
+
+    })
+
+
+    // EXPERIMENTOS DE CAMPO
+    //- onload(){
+    //-   setInterval(function(){ 
+    //-     let liloco = document.createElement('li');
+    //-     liloco.classList.add("texto");
+    //-     liloco.classList.add('typewritter');
+    //-     liloco.innerText = `Agente Donnahue :   Estamos en peligro, avisen a la central`;
+
+    //-      listaMensajes.append(li);
+    //-    }, 3000);
+
+    //-    setInterval(function(){ 
+    //-     let liloco = document.createElement('li');
+    //-     liloco.classList.add("texto");
+    //-     liloco.classList.add('typewritter');
+    //-     liloco.innerText = `Agente Donnahue :   Estamos en peligro, avisen a la central`;
+
+    //-      listaMensajes.append(li);
+    //-    }, 3000);
+       
+    //- }

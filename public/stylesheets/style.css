@@ -1,0 +1,116 @@
+/*
+           88             
+           ""             
+                          
+ ,adPPYba, 88 ,adPPYYba,  
+a8"     "" 88 ""     `Y8  
+8b         88 ,adPPPPP88  
+"8a,   ,aa 88 88,    ,88  
+ `"Ybbd8"' 88 `"8bbdP"Y8  Terminal de la CIA
+ */
+
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+
+  color: rgb(255, 255, 255);
+
+  /* background-image: linear-gradient(
+    63.30108042279505deg,
+    rgba(255, 68, 0, 1) 41.0234375%,
+    rgba(254, 68, 0, 1) 41.0234375%,
+    rgba(237, 154, 0, 1) 94.4609375%
+  ); */
+  background-image: url(../images/CIA_bg.jpg);
+
+  /* background-size: 150%; */
+}
+
+.escudo {
+  width: 150px;
+}
+
+a {
+  color: #00b7ff;
+}
+
+h1 {
+  text-align: center;
+}
+
+p {
+  text-align: center;
+}
+
+.pantalla {
+  background-color: rgba(0, 0, 0, 0.39);
+  margin-right: auto;
+  height: 500px;
+  border-radius: 0.5%;
+  align-self: center;
+
+  overflow-y: scroll;
+}
+
+.side {
+  width: 10%;
+}
+
+label,
+input {
+  margin: 20px;
+}
+
+.texto1 {
+  color: rgb(179, 185, 202);
+  font-weight: 700;
+  margin: 10px;
+  margin-top: 10px;
+}
+
+.texto {
+  color: rgb(192, 231, 238);
+  margin: 10px;
+  margin-top: 10px;
+}
+
+.separador {
+  height: 50px;
+}
+
+span {
+  font-weight: normal;
+}
+
+/* EFECTO TYPEWRITTER */
+
+.typewriter {
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  border-right: 0.15em solid rgb(0, 217, 255); /* The typwriter cursor */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: 0.15em; /* Adjust as needed */
+
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+/* The typing effect */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: rgb(192, 231, 238);
+  }
+}

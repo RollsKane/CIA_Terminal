@@ -1,0 +1,124 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require("../app");
+var debug = require("debug")("chatloco:server");
+var http = require("http");
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || "3000");
+app.set("port", port);
+
+/**
+ * Create HTTP server.
+ */
+
+/* Este es el unico acceso al server desde la app */
+var server = http.createServer(app);
+/* Esto nos permita usar la libreria socket.io en nuestro server */
+let io = require("socket.io")(server);
+
+// Es el evento que se lanza cuando un cliente externo se conecta a nuestro servidor
+io.on("connection", socket => {
+  console.log("Una entidad de la matriz intenta hackear tu terminal");
+
+  // Envia un mensaje a todos los users menos al que se acaba de conectar
+  socket.broadcast.emit("chat_message", {
+    username: "Jordan",
+    message: "Un nuevo agente de campo se ha conectado a la terminal"
+  });
+
+  // Cuando alguien se conecte, emito hacia fuera el número de usuarios conectados
+  io.emit("chat_users", io.engine.clientsCount);
+  console.error("Iniciando paradigma celsius a nivel subatómico");
+
+  // Capturo elemento de index.pug con socket
+  socket.on("chat_message", data => {
+    console.log(data);
+
+    // Emitimos desde el servidor a todos los clientes conectados con io.emit
+    // Lo que estoy haciendo es esto:
+    // - Un cliente envía datos al servidor
+    // - El servidor envía esos datos al resto de clientes
+    io.emit("chat_message", data);
+  });
+
+  // Envia un mensaje a todos los users menos al que se acaba de desconectar
+  socket.on("disconnect", () => {
+    io.emit("chat_users", io.engine.clientsCount);
+    socket.broadcast.emit("chat_message", {
+      username: "Jordan",
+      message: "Un agente de campo ha sido ejecutado"
+    });
+  });
+});
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on("error", onError);
+server.on("listening", onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== "listen") {
+    throw error;
+  }
+
+  var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case "EACCES":
+      console.error(bind + " requires elevated privileges");
+      process.exit(1);
+      break;
+    case "EADDRINUSE":
+      console.error(bind + " is already in use");
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+  debug("Listening on " + bind);
+}

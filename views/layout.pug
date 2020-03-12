@@ -1,0 +1,15 @@
+doctype html
+html
+  head
+    title= title
+    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css")
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='/socket.io/socket.io.js')
+  body
+
+  .container
+  img.escudo(src="../images/Escudo.png", alt="CIA")
+  h1 Teminal gubernamental de la CIA
+  p Central Intelligence Agency
+  
+    block content
